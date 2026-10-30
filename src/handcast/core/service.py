@@ -1,10 +1,12 @@
+from abc import ABC, abstractmethod
 import threading
 import traceback
 
-class Service:
+
+class Service(ABC):
     def __init__(self, name: str):
         self.name = name
-        self.error = BaseException | None = None
+        self.error: BaseException | None = None
         self._stop_event = threading.Event()
         self._thread = threading.Thread(target=self._loop, name=name, daemon=True)
 
@@ -23,8 +25,8 @@ class Service:
     def on_start(self) -> None: ...
     def on_stop(self) -> None: ...
 
-    def run_once(self) -> None:
-        raise NotImplementedError
+    @abstractmethod
+    def run_once(self) -> None: ...
 
     def _loop(self) -> None:
         try:

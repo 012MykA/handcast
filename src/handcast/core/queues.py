@@ -3,8 +3,8 @@ from multiprocessing import Condition
 
 
 class RingQueue[T]:
-    def __init__(self, max_size: int = 2):
-        self._buf: deque[T] = deque(maxlen=max_size)
+    def __init__(self, maxsize: int = 2):
+        self._buf: deque[T] = deque(maxlen=maxsize)
         self._cond = Condition()
         self._dropped = 0
 
