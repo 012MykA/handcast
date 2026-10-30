@@ -15,11 +15,13 @@ class CaptureService(Service):
         out: RingQueue[Frame],
         mirror: bool = True,
     ):
+        print("Init CaptureService...")
         super().__init__("capture")
         self._camera = camera
         self._out = out
         self._mirror = mirror
         self._index = 0
+        print("CaptureService initialized.")
 
     def run_once(self) -> None:
         image = self._camera.get_frame()

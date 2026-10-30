@@ -11,10 +11,12 @@ class TrackingService(Service):
         in_frame_queue: RingQueue[Frame],
         out_result_queue: RingQueue[TrackingResult],
     ):
+        print("Init TrackingService...")
         super().__init__("tracking")
         self._tracker = tracker
         self._frame_queue = in_frame_queue
         self._result_queue = out_result_queue
+        print("TrackingService initialized.")
 
     def on_start(self) -> None:
         self._tracker.open()
