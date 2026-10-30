@@ -2,7 +2,7 @@ import threading
 import traceback
 
 class Service:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.error = BaseException | None = None
         self._stop_event = threading.Event()
