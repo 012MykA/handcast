@@ -1,5 +1,5 @@
 from collections import deque
-from multiprocessing import Condition
+from threading import Condition
 
 
 class RingQueue[T]:

@@ -25,7 +25,7 @@ class Landmark:
 
 @dataclass(frozen=True, slots=True)
 class HandPose:
-    size: Side
+    side: Side
     landmarks: tuple[Landmark, ...]
     confidence: float
     timestamp: float

@@ -34,6 +34,7 @@ class Service(ABC):
             while not self._stop_event.is_set():
                 self.run_once()
         except BaseException as e:
+            self.error = e
             traceback.print_exc()
         finally:
             self.on_stop()

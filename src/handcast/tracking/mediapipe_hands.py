@@ -27,12 +27,14 @@ class MediaPipeHandsTracker:
         min_detection: float = 0.5,
         min_presence: float = 0.5,
         min_tracking: float = 0.5,
+        swap_sides: bool = True,
     ):
         self._model_path = model_path
         self._max_hands = max_hands
         self._min_detection = min_detection
         self._min_presence = min_presence
         self._min_tracking = min_tracking
+        self._swap_sides = swap_sides
         self._landmarker: vision.HandLandmarker | None = None
         self._last_ts_ms = -1
 
@@ -65,7 +67,12 @@ class MediaPipeHandsTracker:
         hands = []
         for landmarks, handedness in zip(result.hand_landmarks, result.handedness):
             category = handedness[0]
-            side = Side.LEFT if category.category_name == "Left" else Side.RIGHT
+
+            is_left = category.category_name == "Left"
+            if self._swap_sides:
+                is_left = not is_left
+
+            side = Side.LEFT if is_left else Side.RIGHT
 
             pose = HandPose(
                 side=side,
@@ -78,8 +85,10 @@ class MediaPipeHandsTracker:
         return tuple(hands)
 
     def _ensure_model(self) -> None:
-        if not self._model_path.exists():
+        if self._model_path.exists():
             return
         print(f"Downloading hand_landmarker model to {self._model_path}...")
-        self._model_path.mkdir(parents=True, exist_ok=True)
-        urllib.request.urlretrieve(MODEL_URL, self._model_path)
+        self._model_path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = self._model_path.with_suffix(".tmp")
+        urllib.request.urlretrieve(MODEL_URL, tmp)
+        tmp.replace(self._model_path)
