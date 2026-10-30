@@ -1,0 +1,43 @@
+{
+  "camera": {
+    "index": 0,
+    "mirror": true
+  },
+  "tracking": {
+    "max_hands": 2,
+    "min_detection": 0.5,
+    "min_presence": 0.5,
+    "min_tracking": 0.5,
+    "swap_sides": true
+  },
+  "queues": {
+    "frames": 2,
+    "tracking": 2,
+    "gestures": 2
+  },
+  "matching": {
+    "threshold": 0.8,
+    "angle_tolerance_deg": 45.0,
+    "spread_tolerance_deg": 30.0,
+    "pinch_tolerance": 0.6,
+    "use_orientation": false,
+    "orientation_tolerance_deg": 40.0,
+    "exclusive_per_hand": true
+  },
+  "stabilizer": {
+    "min_frames": 4,
+    "release_frames": 3,
+    "cooldown_ms": 300
+  },
+  "recording": {
+    "countdown_s": 3.0,
+    "samples": 15,
+    "min_samples": 8,
+    "sampling_timeout_s": 3.0,
+    "min_confidence": 0.8,
+    "message_s": 4.0
+  },
+  "paths": {
+    "gestures": "config/gestures.json"
+  }
+}

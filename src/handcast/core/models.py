@@ -27,6 +27,7 @@ class Landmark:
 class HandPose:
     side: Side
     landmarks: tuple[Landmark, ...]
+    world_landmarks: tuple[Landmark, ...]
     confidence: float
     timestamp: float
 
