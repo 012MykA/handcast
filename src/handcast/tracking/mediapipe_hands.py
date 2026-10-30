@@ -65,22 +65,24 @@ class MediaPipeHandsTracker:
         result = self._landmarker.detect_for_video(mp_image, ts_ms)
 
         hands = []
-        for landmarks, handedness in zip(result.hand_landmarks, result.handedness):
+        for landmarks, world, handedness in zip(
+            result.hand_landmarks, result.hand_world_landmarks, result.handedness
+        ):
             category = handedness[0]
 
             is_left = category.category_name == "Left"
             if self._swap_sides:
                 is_left = not is_left
 
-            side = Side.LEFT if is_left else Side.RIGHT
-
-            pose = HandPose(
-                side=side,
-                landmarks=tuple(Landmark(p.x, p.y, p.z) for p in landmarks),
-                confidence=category.score,
-                timestamp=frame.timestamp,
+            hands.append(
+                HandPose(
+                    side=Side.LEFT if is_left else Side.RIGHT,
+                    landmarks=tuple(Landmark(p.x, p.y, p.z) for p in landmarks),
+                    world_landmarks=tuple(Landmark(p.x, p.y, p.z) for p in world),
+                    confidence=category.score,
+                    timestamp=frame.timestamp,
+                )
             )
-            hands.append(pose)
 
         return tuple(hands)
 
